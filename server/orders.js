@@ -59,8 +59,7 @@ export function registerOrderRoutes({ app, adminRouter, q, bad }) {
   }
 
   /*
-   * Crea un pedido utilizando precios obtenidos de la base de datos.
-   * Nunca confía en los precios ni nombres enviados por el navegador.
+   * Crea un pedido usando los precios de la base de datos.
    */
   app.post(
     '/api/orders',
@@ -74,7 +73,9 @@ export function registerOrderRoutes({ app, adminRouter, q, bad }) {
       const notes = String(req.body?.notes || '').trim()
 
       if (notes.length > 1000) {
-        throw bad('Las notas no pueden superar los 1000 caracteres.')
+        throw bad(
+          'Las notas no pueden superar los 1000 caracteres.'
+        )
       }
 
       const submittedItems = req.body?.items
@@ -84,7 +85,9 @@ export function registerOrderRoutes({ app, adminRouter, q, bad }) {
         submittedItems.length === 0 ||
         submittedItems.length > 50
       ) {
-        throw bad('El carrito está vacío o contiene demasiados productos.')
+        throw bad(
+          'El carrito está vacío o contiene demasiados productos.'
+        )
       }
 
       const snapshot = []
@@ -101,7 +104,9 @@ export function registerOrderRoutes({ app, adminRouter, q, bad }) {
           quantity < 1 ||
           quantity > 50
         ) {
-          throw bad('Hay un producto o una cantidad inválida.')
+          throw bad(
+            'Hay un producto o una cantidad inválida.'
+          )
         }
 
         const [product] = await q(
@@ -131,7 +136,10 @@ export function registerOrderRoutes({ app, adminRouter, q, bad }) {
         const unitPrice = Number(product.price)
 
         if (!Number.isFinite(unitPrice) || unitPrice < 0) {
-          throw bad('El precio de un producto no es válido.', 500)
+          throw bad(
+            'El precio de un producto no es válido.',
+            500
+          )
         }
 
         let packSelections = []
@@ -159,9 +167,7 @@ export function registerOrderRoutes({ app, adminRouter, q, bad }) {
             ? submitted.packSelections
             : []
 
-          if (
-            suppliedOptions.length !== options.length
-          ) {
+          if (suppliedOptions.length !== options.length) {
             throw bad(
               `Revisá las opciones del pack "${product.name}".`
             )
@@ -191,7 +197,9 @@ export function registerOrderRoutes({ app, adminRouter, q, bad }) {
 
             for (const selection of selections) {
               const selectedProductId = Number(selection?.id)
-              const selectedQuantity = Number(selection?.quantity)
+              const selectedQuantity = Number(
+                selection?.quantity
+              )
 
               if (
                 !Number.isInteger(selectedProductId) ||
@@ -456,6 +464,37 @@ export function registerOrderRoutes({ app, adminRouter, q, bad }) {
       res.json({
         ok: true,
         order
+      })
+    })
+  )
+
+  /*
+   * Elimina un pedido desde el panel.
+   * Esta ruta queda protegida por el middleware adminRouter.
+   */
+  adminRouter.delete(
+    '/orders/:id',
+    W(async (req, res) => {
+      const id = Number(req.params.id)
+
+      if (!Number.isInteger(id) || id <= 0) {
+        throw bad('Número de pedido inválido.')
+      }
+
+      const [order] = await q(
+        `DELETE FROM orders
+         WHERE id = $1
+         RETURNING id`,
+        [id]
+      )
+
+      if (!order) {
+        throw bad('No existe ese pedido.', 404)
+      }
+
+      res.json({
+        ok: true,
+        id: order.id
       })
     })
   )
