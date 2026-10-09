@@ -1,9 +1,17 @@
-{
-"rewrites": [
-{
-"source": "/api/:path*",
-"destination": "https://bardo-bebb.onrender.com/api/:path*"
-}
-]
-}
 
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://bardo-bebb.onrender.com/api/:path*"
+    },
+    {
+      "source": "/admin",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "/index.html"
+    }
+  ]
+}
