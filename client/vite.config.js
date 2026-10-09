@@ -5,7 +5,11 @@ export default defineConfig({
 plugins: [react()],
 server: {
 proxy: {
-'/api': 'http://localhost:3001'
+'/api': {
+target: 'https://bardo-bebb.onrender.com',
+changeOrigin: true,
+secure: true
+}
 }
 }
 })

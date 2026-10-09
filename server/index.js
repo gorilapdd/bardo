@@ -9,6 +9,7 @@ import fs from 'fs'
 import { fileURLToPath } from 'url'
 import { createClient } from '@supabase/supabase-js'
 import { q } from './db.js'
+import { registerOrderRoutes } from './orders.js'
 
 const {
   JWT_SECRET,
@@ -396,6 +397,13 @@ app.use(
   '/api/admin',
   A
 )
+
+registerOrderRoutes({
+  app,
+  adminRouter: A,
+  q,
+  bad
+})
 
 /* =========================================================
    IMÁGENES
