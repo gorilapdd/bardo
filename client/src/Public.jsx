@@ -136,9 +136,6 @@ export default function Public() {
   const [packError, setPackError] = useState('')
 
   const [delivery, setDelivery] = useState(false)
-  const [deliveryLocation, setDeliveryLocation] = useState(null)
-  const [locationLoading, setLocationLoading] = useState(false)
-  const [locationError, setLocationError] = useState('')
 
   const [cart, setCart] = useState(() => {
     try {
@@ -521,79 +518,11 @@ export default function Public() {
       )
     )
 
-  const getDeliveryLocation = () => {
-    setLocationError('')
-
-    if (!navigator.geolocation) {
-      setLocationError(
-        'Tu navegador no permite obtener la ubicación.'
-      )
-      return
-    }
-
-    setLocationLoading(true)
-
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        setDeliveryLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          accuracy: position.coords.accuracy
-        })
-
-        setLocationLoading(false)
-        setLocationError('')
-      },
-      error => {
-        setLocationLoading(false)
-
-        if (error.code === 1) {
-          setLocationError(
-            'No se permitió el acceso a tu ubicación. Activá el permiso de ubicación del navegador e intentá nuevamente.'
-          )
-        } else if (error.code === 2) {
-          setLocationError(
-            'No pudimos determinar tu ubicación. Verificá que tengas activada la ubicación de tu dispositivo.'
-          )
-        } else if (error.code === 3) {
-          setLocationError(
-            'La ubicación tardó demasiado en obtenerse. Intentá nuevamente.'
-          )
-        } else {
-          setLocationError(
-            'No pudimos obtener tu ubicación. Intentá nuevamente.'
-          )
-        }
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 0
-      }
-    )
-  }
-
   const toggleDelivery = checked => {
     setDelivery(checked)
-    setLocationError('')
-
-    if (!checked) {
-      setDeliveryLocation(null)
-    }
   }
 
-  const mapUrl = deliveryLocation
-    ? `https://www.google.com/maps?q=${deliveryLocation.latitude},${deliveryLocation.longitude}`
-    : ''
-
   const wa = () => {
-    if (delivery && !deliveryLocation) {
-      setLocationError(
-        'Para pedir con envío a domicilio primero tenés que compartir tu ubicación.'
-      )
-      return
-    }
-
     const textLines = []
 
     lines.forEach(l => {
@@ -633,7 +562,7 @@ export default function Public() {
       textLines.push(
         '',
         `🚚 Envío a domicilio: ${money(deliveryCost)}`,
-        `📍 Ubicación de entrega: ${mapUrl}`
+        '📍 La dirección de entrega se coordina por WhatsApp.'
       )
     }
 
@@ -1842,89 +1771,10 @@ export default function Public() {
 
                   {delivery && (
                     <div className="delivery-location">
-                      {!deliveryLocation ? (
-                        <>
-                          <div className="delivery-location-info">
-                            <Icon
-                              name="location"
-                              size={18}
-                            />
-
-                            <span>
-                              Necesitamos tu ubicación para saber dónde entregar tu pedido.
-                            </span>
-                          </div>
-
-                          <button
-                            type="button"
-                            className="location-btn"
-                            onClick={
-                              getDeliveryLocation
-                            }
-                            disabled={
-                              locationLoading
-                            }
-                          >
-                            <Icon
-                              name="location"
-                              size={17}
-                            />
-
-                            {locationLoading
-                              ? 'Obteniendo ubicación...'
-                              : 'Usar mi ubicación'}
-                          </button>
-                        </>
-                      ) : (
-                        <>
-                          <div className="location-success">
-                            <span className="location-success-icon">
-                              <Icon
-                                name="check"
-                                size={16}
-                              />
-                            </span>
-
-                            <div>
-                              <strong>
-                                Ubicación obtenida
-                              </strong>
-
-                              <small>
-                                Se enviará la ubicación exacta del pedido.
-                              </small>
-                            </div>
-                          </div>
-
-                          <button
-                            type="button"
-                            className="location-update"
-                            onClick={
-                              getDeliveryLocation
-                            }
-                            disabled={
-                              locationLoading
-                            }
-                          >
-                            {locationLoading
-                              ? 'Actualizando...'
-                              : 'Actualizar ubicación'}
-                          </button>
-                        </>
-                      )}
-
-                      {locationError && (
-                        <div className="location-error">
-                          <Icon
-                            name="alert"
-                            size={16}
-                          />
-
-                          <span>
-                            {locationError}
-                          </span>
-                        </div>
-                      )}
+                      <div className="delivery-location-info">
+                        <Icon name="whatsapp" size={18} />
+                        <span>Coordinamos la dirección de entrega por WhatsApp al confirmar el pedido.</span>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -1970,11 +1820,7 @@ export default function Public() {
 
                 <button
                   className="whatsapp-order"
-                  disabled={
-                    !s.whatsapp_number ||
-                    (delivery &&
-                      !deliveryLocation)
-                  }
+                  disabled={!s.whatsapp_number || !lines.length}
                   onClick={wa}
                 >
                   <Icon
@@ -2003,8 +1849,6 @@ export default function Public() {
                   onClick={() => {
                     setCart([])
                     setDelivery(false)
-                    setDeliveryLocation(null)
-                    setLocationError('')
                   }}
                 >
                   Vaciar carrito
