@@ -3199,3 +3199,677 @@ body:has(.ov) {
       max(.65rem, env(safe-area-inset-bottom));
   }
 }
+
+/* =========================================================
+   BARDO ADMIN — REDISEÑO RESPONSIVE
+   Agregar al final de styles.css
+========================================================= */
+
+.adm {
+  --adm-bg: #f5f6f8;
+  --adm-surface: #ffffff;
+  --adm-border: #e8eaf0;
+  --adm-muted: #737987;
+  --adm-radius: 16px;
+
+  min-height: 100vh;
+  background: var(--adm-bg);
+  color: #191b21;
+}
+
+/* ---------- Menú lateral ---------- */
+
+.adm aside {
+  background: #171719;
+  border-right: 1px solid rgba(255, 255, 255, .06);
+  box-shadow: 5px 0 25px rgba(0, 0, 0, .04);
+}
+
+.adm aside b {
+  color: #fff;
+  font-size: 1.3rem;
+  letter-spacing: -.045em;
+}
+
+.adm aside b::before {
+  content: "B";
+  width: 38px;
+  height: 38px;
+  margin-right: 11px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 12px;
+  color: #fff;
+  background: var(--r);
+  box-shadow: 0 5px 15px rgba(189, 23, 36, .3);
+}
+
+.adm aside a,
+.adm aside button {
+  position: relative;
+  min-height: 45px;
+  border-radius: 11px;
+  font-size: .86rem;
+  transition:
+    color .2s ease,
+    background .2s ease,
+    transform .2s ease;
+}
+
+.adm aside a:hover,
+.adm aside button:hover {
+  background: rgba(255, 255, 255, .08);
+  color: #fff;
+}
+
+.adm aside a.active {
+  background: linear-gradient(110deg, var(--r), #a91320);
+  box-shadow: 0 6px 18px rgba(189, 23, 36, .2);
+}
+
+/* Iconos visuales para la navegación actual */
+
+.adm aside a::before {
+  display: inline-grid;
+  place-items: center;
+  width: 23px;
+  flex: 0 0 23px;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.adm aside a[href="/admin"],
+.adm aside a[href="/admin/"] {
+  /* Dashboard */
+}
+
+.adm aside a[href$="/pedidos"]::before {
+  content: "▤";
+}
+
+.adm aside a[href$="/productos"]::before {
+  content: "▣";
+}
+
+.adm aside a[href$="/categorias"]::before {
+  content: "◫";
+}
+
+.adm aside a[href$="/configuracion"]::before {
+  content: "⚙";
+}
+
+.adm aside a[href="/admin"]::before,
+.adm aside a[href="/admin/"]::before {
+  content: "⌂";
+}
+
+.adm aside a[href^="/"] {
+  overflow: hidden;
+}
+
+/* ---------- Área principal ---------- */
+
+.adm > section {
+  min-width: 0;
+  max-width: none;
+  padding: clamp(1rem, 3vw, 2.4rem);
+}
+
+.adm h1 {
+  color: #191b21;
+  letter-spacing: -.045em;
+}
+
+.adm h2,
+.adm h3 {
+  letter-spacing: -.025em;
+}
+
+.adm p {
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Encabezados y acciones ---------- */
+
+.adm .bar {
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.adm .bar h1 {
+  font-size: clamp(1.65rem, 3vw, 2.25rem);
+}
+
+.adm .bar > div small {
+  display: block;
+  margin-top: .35rem;
+  color: var(--adm-muted);
+  line-height: 1.5;
+}
+
+.adm .btn {
+  min-height: 42px;
+  border-radius: 11px;
+  font-size: .82rem;
+  font-weight: 750;
+}
+
+.adm .btn.red {
+  background: var(--r);
+  box-shadow: 0 5px 13px rgba(189, 23, 36, .16);
+}
+
+.adm .btn.red:hover {
+  background: var(--r-dark);
+  box-shadow: 0 8px 20px rgba(189, 23, 36, .22);
+}
+
+.adm .btn.ghost {
+  border: 1px solid #e2e4e9;
+  background: #fff;
+  color: #353943;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, .02);
+}
+
+.adm .btn.ghost:hover {
+  border-color: #cfd2da;
+  background: #f8f8fa;
+}
+
+.adm .btn.ghost.sm {
+  min-height: 36px;
+  padding: .5rem .7rem;
+  border-radius: 9px;
+  font-size: .76rem;
+}
+
+/* ---------- Dashboard ---------- */
+
+.adm .stats {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.adm .stats > div {
+  position: relative;
+  min-height: 120px;
+  padding: 1.2rem;
+  overflow: hidden;
+  border: 1px solid var(--adm-border);
+  border-left: 1px solid var(--adm-border);
+  border-radius: var(--adm-radius);
+  background: var(--adm-surface);
+  box-shadow: 0 4px 16px rgba(20, 24, 35, .025);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.adm .stats > div::after {
+  content: "";
+  position: absolute;
+  right: -20px;
+  top: -22px;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  background: rgba(189, 23, 36, .055);
+}
+
+.adm .stats > div:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(20, 24, 35, .07);
+}
+
+.adm .stats span {
+  margin-bottom: .8rem;
+  color: var(--adm-muted);
+  font-size: .8rem;
+}
+
+.adm .stats b {
+  font-size: clamp(1.65rem, 3vw, 2.2rem);
+  font-weight: 850;
+  letter-spacing: -.05em;
+}
+
+/* ---------- Filtros y campos ---------- */
+
+.adm .filters {
+  gap: .8rem;
+  margin-bottom: 1.2rem;
+}
+
+.adm .filters input,
+.adm .filters select,
+.adm select,
+.adm input:not([type="checkbox"]):not([type="file"]),
+.adm textarea {
+  max-width: 100%;
+  border-color: #e1e3e9;
+  border-radius: 11px;
+  background-color: #fff;
+  color: #24262d;
+}
+
+.adm input:focus,
+.adm select:focus,
+.adm textarea:focus {
+  border-color: var(--r);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(189, 23, 36, .09);
+}
+
+.adm .f {
+  gap: .45rem;
+  margin-bottom: 1rem;
+}
+
+.adm .f span {
+  font-size: .8rem;
+  color: #383b44;
+}
+
+.adm .chk {
+  gap: .65rem;
+  padding: .2rem 0;
+}
+
+/* ---------- Listas de productos y categorías ---------- */
+
+.adm .tbl {
+  gap: .8rem;
+  min-width: 0;
+}
+
+.adm .tr {
+  gap: .85rem;
+  padding: 1rem;
+  border-color: var(--adm-border);
+  border-radius: 14px;
+  box-shadow: 0 3px 12px rgba(20, 24, 35, .025);
+}
+
+.adm .tr:hover {
+  border-color: #d9dce4;
+  box-shadow: 0 8px 22px rgba(20, 24, 35, .055);
+}
+
+.adm .tr img,
+.adm .tr .noimg {
+  width: 66px;
+  height: 66px;
+  border: 1px solid #eeeef1;
+  border-radius: 12px;
+  background: #f7f7f8;
+}
+
+.adm .tr .grow {
+  flex: 1 1 160px;
+}
+
+.adm .tr b {
+  font-size: .9rem;
+  line-height: 1.4;
+}
+
+.adm .tr small {
+  line-height: 1.5;
+}
+
+.adm .sw {
+  flex: 0 0 auto;
+  padding: .25rem;
+}
+
+/* ---------- Tarjetas y detalles ---------- */
+
+.adm .adm-card {
+  min-width: 0;
+  padding: clamp(1rem, 2vw, 1.4rem);
+  border: 1px solid var(--adm-border);
+  border-radius: var(--adm-radius);
+  background: #fff;
+  box-shadow: 0 4px 15px rgba(20, 24, 35, .025);
+}
+
+.adm .adm-card h3 {
+  font-size: 1.02rem;
+}
+
+.adm .adm-empty {
+  gap: .5rem;
+  padding: 2.5rem 1.2rem;
+  border-color: #dfe1e7;
+  border-radius: var(--adm-radius);
+  background: #fff;
+}
+
+.adm .adm-empty b {
+  color: #252832;
+}
+
+.adm .adm-empty span {
+  max-width: 420px;
+  font-size: .86rem;
+  line-height: 1.6;
+}
+
+/* ---------- Pedidos ---------- */
+
+.adm .tbl > div:not(.tr) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.adm .tbl > div > div > select {
+  min-height: 38px;
+  padding: .45rem .65rem;
+  border: 1px solid #e1e3e9;
+  border-radius: 9px;
+  background-color: #fff;
+  font-size: .78rem;
+}
+
+.adm .tbl > div > div > select:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+/* ---------- Modal y formularios ---------- */
+
+.adm .ov {
+  z-index: 1100;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(14, 15, 18, .66);
+  backdrop-filter: blur(7px);
+}
+
+.adm .sheet {
+  width: min(620px, 100%);
+  max-width: 620px;
+  max-height: min(90dvh, 850px);
+  padding: clamp(1.1rem, 3vw, 1.8rem);
+  border: 1px solid rgba(255, 255, 255, .6);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, .2);
+}
+
+.adm .sheet form > h2,
+.adm .sheet > h2 {
+  margin-bottom: 1.2rem;
+  padding-right: .5rem;
+  font-size: 1.45rem;
+}
+
+.adm .sheet .row {
+  flex-wrap: wrap;
+  margin-top: 1.2rem;
+}
+
+.adm .up {
+  border-color: #d8dbe3;
+  border-radius: 12px;
+  background: #fafafb;
+}
+
+.adm .up img {
+  border: 1px solid #eeeef1;
+}
+
+/* ---------- Login ---------- */
+
+.login {
+  padding: 1.25rem;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(189, 23, 36, .2), transparent 28%),
+    radial-gradient(circle at 90% 90%, rgba(189, 23, 36, .12), transparent 25%),
+    #151517;
+}
+
+.login form {
+  gap: 1rem;
+  padding: clamp(1.4rem, 5vw, 2.4rem);
+  border: 1px solid rgba(255, 255, 255, .75);
+  border-radius: 22px;
+  box-shadow: 0 25px 90px rgba(0, 0, 0, .25);
+}
+
+.login form h1 {
+  font-size: 1.8rem;
+}
+
+.login form h1::after {
+  content: "";
+  display: block;
+  width: 42px;
+  height: 4px;
+  margin-top: .8rem;
+  border-radius: 99px;
+  background: var(--r);
+}
+
+.login .btn {
+  min-height: 48px;
+  margin-top: .25rem;
+}
+
+/* ---------- Accesibilidad ---------- */
+
+.adm button:focus-visible,
+.adm a:focus-visible,
+.adm input:focus-visible,
+.adm select:focus-visible,
+.adm textarea:focus-visible {
+  outline: 3px solid rgba(189, 23, 36, .28);
+  outline-offset: 2px;
+}
+
+.adm button:disabled {
+  cursor: not-allowed;
+}
+
+@media (min-width: 1100px) {
+  .adm .stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .adm > section {
+    padding: 2.5rem clamp(2rem, 4vw, 3.5rem);
+  }
+}
+
+/* ---------- Tablet y móvil ---------- */
+
+@media (max-width: 849px) {
+  .adm {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .adm aside {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    min-height: auto;
+    height: auto;
+    padding: .65rem .75rem;
+    gap: .35rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    background: #171719;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, .12);
+  }
+
+  .adm aside b {
+    min-height: 40px;
+    padding: 0 .45rem;
+    font-size: 1rem;
+  }
+
+  .adm aside b::before {
+    width: 32px;
+    height: 32px;
+    margin-right: .5rem;
+    border-radius: 9px;
+  }
+
+  .adm aside a,
+  .adm aside button {
+    width: auto;
+    min-height: 40px;
+    padding: .55rem .7rem;
+    font-size: .78rem;
+  }
+
+  .adm aside button {
+    margin-left: 0;
+  }
+
+  .adm > section {
+    width: 100%;
+    padding: 1.2rem;
+  }
+
+  .adm .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .adm .bar {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+@media (max-width: 560px) {
+  .adm > section {
+    padding: 1rem .75rem 2rem;
+  }
+
+  .adm .bar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: .8rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .adm .bar > .btn,
+  .adm .bar > button {
+    width: 100%;
+  }
+
+  .adm .stats {
+    gap: .65rem;
+  }
+
+  .adm .stats > div {
+    min-height: 105px;
+    padding: .9rem;
+    border-radius: 13px;
+  }
+
+  .adm .stats span {
+    font-size: .73rem;
+  }
+
+  .adm .filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .adm .tr {
+    gap: .65rem;
+    padding: .8rem;
+  }
+
+  .adm .tr img,
+  .adm .tr .noimg {
+    width: 54px;
+    height: 54px;
+  }
+
+  .adm .tr .grow {
+    flex: 1 1 calc(100% - 70px);
+  }
+
+  .adm .tr .sw {
+    margin-left: auto;
+  }
+
+  .adm .tr .btn {
+    flex: 1 1 auto;
+  }
+
+  .adm .tbl > div:not(.tr) {
+    padding: .8rem !important;
+  }
+
+  .adm .tbl > div:not(.tr) > div {
+    width: 100%;
+  }
+
+  .adm .tbl > div:not(.tr) > div > select {
+    max-width: 100% !important;
+    flex: 1 1 100%;
+  }
+
+  .adm .sheet {
+    padding: 1rem;
+    border-radius: 18px;
+  }
+
+  .adm .sheet .row {
+    flex-direction: column-reverse;
+  }
+
+  .adm .sheet .row > .btn {
+    width: 100%;
+    flex: 1 1 auto;
+  }
+
+  .adm .adm-card {
+    padding: .95rem;
+  }
+
+  .adm .up {
+    align-items: flex-start;
+  }
+
+  .adm .narrow {
+    max-width: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .adm aside {
+    padding: .5rem;
+  }
+
+  .adm aside b {
+    padding: 0 .25rem;
+  }
+
+  .adm aside a,
+  .adm aside button {
+    gap: .3rem;
+    padding: .5rem .55rem;
+    font-size: .73rem;
+  }
+
+  .adm .stats > div {
+    padding: .75rem;
+  }
+
+  .adm .stats b {
+    font-size: 1.55rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adm *,
+  .login * {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
